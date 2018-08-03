@@ -30,13 +30,18 @@ The specification describes a small read/write API whose components are mandator
 + a **releaseId** maps to a set of data that includes a **manifestURI** string which describes the location of an [EIP 1123 package manifest](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1123.md). This manifest contains data about the release including the location of its component code assets.
 + a **manifestURI** string contains a cryptographic hash which can be used to verify the integrity of the content found at the URI. The URI format is defined in [RFC3986](https://tools.ietf.org/html/rfc3986).
 
-An example of a package name and release version string pair is:
+### Examples
+
+**Package Names / Release Versions**
+
 ```shell
 "SimpleToken" # package name
 "1.0.1"       # version string
 ```
 
-Implementations are free to choose any scheme for generating a **releaseId**. A common approach would be to hash the strings together as below.
+**Release IDs**
+
+Implementations are free to choose any scheme for generating a **releaseId**. A common approach would be to hash the strings together as below:
 
 ```solidity
 // Hashes package name and a release version string
@@ -48,30 +53,52 @@ function generateReleaseId(string packageName, string version)
     return keccak256(abi.encodePacked(packageName, version));
   }
 ```
-
 Implementations **must** expose this id generation logic as part of their public `read` API so
 tooling can easily map a string based release query to the registry's unique identifier for that release.
 
-**Write API Specification**
+**Manifest URIs**
+
+Any IPFS or Swarm URI meets the definition of **manifestURI**.
+
+Another example is content on GitHub addressed by its SHA-1 hash. This hash can be obtained by running:
+```shell
+$ curl https://api.github.com/repos/<owner>/<repo-name>/contents/<path-to-file>
+```
+A file containing the word "hello" could have its GitHub SHA-1 hash independently verified by comparing it to the output of:
+```shell
+$ printf "blob 6\000hello\n" | sha1sum
+```
+
+### Write API Specification
 The write API consists of a single method, `release`. It passes the registry the package name, a
 version identifier for the release, and a URI specifying the location of a manifest which
 details the contents of the release.
 ```solidity
 function release(string packageName, string version, string manifestURI) public;
 ```
-**Read API Specification**
+### Read API Specification
 
 The read API consists of a set of methods that allows tooling to extract all consumable data from a registry.
 
 ```solidity
-// Retrieves all the packages published to a registry.
-function getAllPackageNames() public view returns (string[]);
+// Retrieves all packages published to a registry. `offset` and `limit` enable
+// paginated responses. (See note below)
+function getAllPackageNames(uint offset, uint limit) public view
+  returns (
+    string[] names,
+    uint offset
+  );
 
 // Retrieves the registry's unique identifier for an existing release of a package.
 function getReleaseId(string packageName, string version) public view returns (bytes32);
 
-// Retrieves all release ids for a package
-function getAllReleaseIds(string packageName) public view returns (bytes32[]);
+// Retrieves all release ids for a package. `offset` and `limit` enable paginated responses.
+// (See note below)
+function getAllReleaseIds(string packageName, uint offset, uint limit) public view
+  returns (
+    bytes32[] ids,
+    uint offset
+  );
 
 // Retrieves package name, release version and URI location data for a release id.
 function getReleaseData(bytes32 releaseId) public view
@@ -84,10 +111,10 @@ function getReleaseData(bytes32 releaseId) public view
 // Retrieves the release id a registry *would* generate for a package name and version pair
 // when executing a release.
 function generateReleaseId(string packageName, string version) pure returns (bytes32);
-
-// Declares whether a registry maintains its releases in semver compliant order.
-function usesSemver() public pure returns (bool);
 ```
+**Pagination**
+
+`getAllPackages` and `getAllReleaseIds` support paginated requests because it's possible that the return values for these methods could become quite large. The methods should return an `offset` that is a pointer to the next available item in a list of all items such that a caller can use it to pick up from where the previous request left off.  (See [here](https://mixmax.com/blog/api-paging-built-the-right-way) for a discussion of the merits and demerits of various pagination strategies.) The `limit` parameter defines the maximum number of items a registry should return per request.
 
 ## Rationale
 The proposal hopes to accomplish the following:
@@ -96,7 +123,6 @@ The proposal hopes to accomplish the following:
 release versions while allowing them to use any versioning schema they choose.
 + Provide the minimum set of getter methods needed to retrieve package data from a registry so that registry aggregators can read all of their data.
 + Define a standard query that synthesizes a release identifier from a package name and version pair so that tooling can resolve specific package version requests without needing to query a registry about all of a package's releases.
-+ Mandate that registries indicate whether or not they enforce semver so that tooling can determine whether consumer requests for packages at a semver range are possible.
 
 Registries may offer more complex `read` APIs that manage requests for packages within a semver range or at `latest` etc. This EIP is agnostic about how tooling or registries might implement these. It recommends that registries implement [EIP 165](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md) and avail themselves of resources to publish more complex interfaces such as [EIP 926](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-926.md).
 
