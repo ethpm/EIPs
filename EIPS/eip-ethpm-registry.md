@@ -60,13 +60,18 @@ tooling can easily map a string based release query to the registry's unique ide
 
 Any IPFS or Swarm URI meets the definition of **manifestURI**.
 
-Another example is content on GitHub addressed by its SHA-1 hash. This hash can be obtained by running:
+Another example is content on GitHub addressed by its SHA-1 hash. The Base64 encoded content at this hash can be obtained by running:
 ```shell
-$ curl https://api.github.com/repos/<owner>/<repo-name>/contents/<path-to-file>
+$ curl https://api.github.com/repos/:owner/:repo/git/blobs/:file_sha
+
+# Example
+$ curl https://api.github.com/repos/rstallman/hello/git/blobs/ce013625030ba8dba906f756967f9e9ca394464a
 ```
-A file containing the word "hello" could have its GitHub SHA-1 hash independently verified by comparing it to the output of:
+
+The string "hello" can have its GitHub SHA-1 hash independently verified by comparing it to the output of:
 ```shell
 $ printf "blob 6\000hello\n" | sha1sum
+> ce013625030ba8dba906f756967f9e9ca394464a
 ```
 
 ### Write API Specification
