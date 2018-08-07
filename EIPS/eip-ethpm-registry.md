@@ -1,4 +1,13 @@
-[ Needs table header ... ]
+---
+eip: unknown
+title: Contract Package Registry Interface
+author: Piper Merriam <piper@ethereum.org>, Christopher Gewecke <christophergewecke@gmail.com>
+type: Standards Track
+category: ERC
+status: Draft
+created: 2018-08-07
+discussions-to:
+---
 
 ## Abstract
 This EIP specifies an interface for publishing to and retrieving assets from smart contract package registries. It is a companion EIP to [1123](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1123.md) which defines a standard for smart contract package manifests.
