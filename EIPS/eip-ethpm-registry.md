@@ -88,7 +88,8 @@ The write API consists of a single method, `release`. It passes the registry the
 version identifier for the release, and a URI specifying the location of a manifest which
 details the contents of the release.
 ```solidity
-function release(string packageName, string version, string manifestURI) public;
+function release(string packageName, string version, string manifestURI) public
+  returns (bytes32 releaseId);
 ```
 ### Read API Specification
 
