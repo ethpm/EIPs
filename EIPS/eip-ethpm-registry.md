@@ -25,7 +25,7 @@ $ ethpm install packages.zeppelin.eth/Ownership
 ```javascript
 const SimpleToken = await web3.packaging
                               .registry('packages.ethpm.eth')
-                              .getPackage('SimpleToken')
+                              .getPackage('simple-token')
                               .getVersion('^1.1.5');
 ```
 
@@ -44,8 +44,8 @@ The specification describes a small read/write API whose components are mandator
 **Package Names / Release Versions**
 
 ```shell
-"SimpleToken" # package name
-"1.0.1"       # version string
+"simple-token" # package name
+"1.0.1"        # version string
 ```
 
 **Release IDs**
