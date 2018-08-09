@@ -37,7 +37,7 @@ The specification describes a small read/write API whose components are mandator
 + a **package** is identified by a unique string name and unique bytes32 **packageId** within a given **registry**
 + a **release** is identified by a `bytes32` **releaseId** which must be unique for a given package name and release version string pair.
 + a **releaseId** maps to a set of data that includes a **manifestURI** string which describes the location of an [EIP 1123 package manifest](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1123.md). This manifest contains data about the release including the location of its component code assets.
-+ a **manifestURI** string contains a cryptographic hash which can be used to verify the integrity of the content found at the URI. The URI format is defined in [RFC3986](https://tools.ietf.org/html/rfc3986).
++ a **manifestURI** is a URI as defined by [RFC3986](https://tools.ietf.org/html/rfc3986) which can be used to retrieve the contents of the package manifest. In addition to validation against RFC3986, each **manifestURI** must also contain a hash of the content as specified in the [EIP 1123](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1123.md).
 
 ### Examples
 
