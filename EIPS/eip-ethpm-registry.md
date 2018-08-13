@@ -1,7 +1,7 @@
 ---
 eip:
 title: Smart Contract Package Registry Interface
-author: Piper Merriam <piper@ethereum.org>, Christopher Gewecke <christophergewecke@gmail.com>, g. nicholas d'andrea <nick.dandrea@consensys.net>
+author: Piper Merriam <piper@ethereum.org>, Christopher Gewecke <christophergewecke@gmail.com>, g. nicholas d'andrea <gnidan@trufflesuite.com>
 type: Standards Track
 category: ERC
 status: Draft
