@@ -1,13 +1,16 @@
 ---
-eip: unknown
-title: Contract Package Registry Interface
-author: Piper Merriam <piper@ethereum.org>, Christopher Gewecke <christophergewecke@gmail.com>
+eip:
+title: Smart Contract Package Registry Interface
+author: Piper Merriam <piper@ethereum.org>, Christopher Gewecke <christophergewecke@gmail.com>, g. nicholas d'andrea <nick.dandrea@consensys.net>
 type: Standards Track
 category: ERC
 status: Draft
-created: 2018-08-07
+created: 2018-08-13
 discussions-to:
 ---
+
+## Simple Summary
+A standard interface for smart contract package registries.
 
 ## Abstract
 This EIP specifies an interface for publishing to and retrieving assets from smart contract package registries. It is a companion EIP to [1123](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1123.md) which defines a standard for smart contract package manifests.
@@ -148,7 +151,7 @@ Registries may offer more complex `read` APIs that manage requests for packages 
 No existing standard exists for package registries. The package registry currently deployed by EthPM would not comply with the standard since it implements only one of the method signatures described in the specification.
 
 ## Implementation
-A reference implementation of this proposal can be found at the EthPM organization on Github [here](https://github.com/ethpm/escape-truffle).
+A reference implementation of this proposal is in active development at the EthPM organization on Github [here](https://github.com/ethpm/escape-truffle).
 
 ## Copyright
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
